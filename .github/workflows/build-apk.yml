@@ -25,7 +25,7 @@ jobs:
       - name: Android-Projekt entpacken
         run: |
           mkdir project
-          unzip -q Schlachtplan_Army_Android_Project.zip -d project
+          unzip -q Schlachtplan_Army_Android_Project-1.zip -d project
 
       - name: APK bauen
         working-directory: project
