@@ -1,0 +1,41 @@
+name: Build Schlachtplan Army APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Java 17 einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Gradle einrichten
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Android-Projekt entpacken
+        run: |
+          mkdir project
+          unzip -q Schlachtplan_Army_Android_Project.zip -d project
+
+      - name: APK bauen
+        working-directory: project
+        run: gradle assembleDebug
+
+      - name: APK umbenennen
+        run: cp project/app/build/outputs/apk/debug/app-debug.apk Schlachtplan-Army.apk
+
+      - name: APK bereitstellen
+        uses: actions/upload-artifact@v4
+        with:
+          name: Schlachtplan-Army-Android
+          path: Schlachtplan-Army.apk
